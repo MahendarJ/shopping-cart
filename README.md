@@ -1,8 +1,15 @@
-# React + Vite
+# React Stripe Shopping Cart
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a simple shopping cart application built with React.js and Vite, featuring Stripe integration for payment processing.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- View a list of products
+- Add products to the shopping cart
+- Adjust the quantity of items in the cart
+- Remove items from the cart
+- Proceed to checkout using Stripe for payment
+
+## Demo
+
+https://shopping-cart-h7p6y5kc5-mahendarj.vercel.app/ - live demo here.
