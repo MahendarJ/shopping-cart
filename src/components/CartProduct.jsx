@@ -2,13 +2,12 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { CartContext } from "../CartContext";
 import { useContext } from "react";
-import { getProductData } from "../productsArray";
 
 const CartProduct = (props) => {
   const cart = useContext(CartContext);
   const id = props.id;
   const quantity = props.quantity;
-  const productsData = getProductData(id);
+  const productsData = cart.getProductData(id) 
 
   return (
     <>

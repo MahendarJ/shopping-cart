@@ -1,17 +1,50 @@
-import React, { useContext, createContext, useState } from "react";
-import { productsArray, getProductData } from "./productsArray";
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const CartContext = createContext({
   item: [],
+  productsArray: [],
   getProductQuantity: () => {},
   addOneToCart: () => {},
   removeOneFromCart: () => {},
   deleteFromCart: () => {},
   getTotalCost: () => {},
+  getProductData: () => {},
+  postToInventory: () => {},
 });
 
 export const CartProvider = ({ children }) => {
   const [cartProducts, setCartProducts] = useState([]);
+  const [productsArray, setProductsArray] = useState([]);
+  const [stockAdded, setStockAdded] = useState();
+  const postToInventory = async (inventory) => {
+    try {
+      const response = await axios.post("http://localhost:3000", inventory);
+      setStockAdded(response.data.message);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000");
+        setProductsArray(response.data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetchData();
+  }, [stockAdded]);
+
+  const getProductData = (id) => {
+    let productData = productsArray.find((product) => product.id === id);
+    if (productData === undefined) {
+      console.log(`Product data does not exist for ID: ${id}`);
+    }
+    return productData;
+  };
 
   const getProductQuantity = (id) => {
     const quantity = cartProducts.find((item) => item.id === id)?.quantity;
@@ -75,11 +108,14 @@ export const CartProvider = ({ children }) => {
 
   const contextValue = {
     item: cartProducts,
+    productsArray: productsArray,
     getProductQuantity,
     addOneToCart,
     removeOneFromCart,
     deleteFromCart,
     getTotalCost,
+    getProductData,
+    postToInventory,
   };
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
