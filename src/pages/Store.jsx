@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Row, Col, Form, Button, FormControl } from "react-bootstrap";
 import ProductCard from "../components/ProductCard";
 import { CartContext } from "../CartContext";
+import { useAuth } from "../auth/AuthProvider";
 
 const Store = () => {
   const [inventory, setInventory] = useState({
@@ -10,6 +11,7 @@ const Store = () => {
     price: "",
   });
   const cart = useContext(CartContext);
+  const auth = useAuth();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInventory((prev) => ({
@@ -19,8 +21,6 @@ const Store = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const response = await axios.post("http://localhost:3000", inventory);
-    // console.log(response.data)
     cart.postToInventory(inventory);
     setInventory({ id: "", title: "", price: "" });
   };
@@ -28,10 +28,11 @@ const Store = () => {
   return (
     <>
       <h1 align="center" className="p-3">
-        Welcome to the store
+        Hot-Beverages inventory stocks
       </h1>
+      <Button onClick={() => auth.logOut()}>Logout</Button>
       <div className="py-5">
-        <h3>Mini Admin inventory</h3>
+        <h3>Mini admin panel</h3>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Stripe Price id</Form.Label>

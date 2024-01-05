@@ -3,17 +3,17 @@ import { Button } from "react-bootstrap";
 import { CartContext } from "../CartContext";
 import { useContext } from "react";
 
-const CartProduct = (props) => {
+const CartProduct = ({ id, quantity }) => {
   const cart = useContext(CartContext);
-  const id = props.id;
-  const quantity = props.quantity;
-  const productsData = cart.getProductData(id) 
+  // const id = props.id;
+  // const quantity = props.quantity;
+  const productsData = cart.getProductData(id);
 
   return (
     <>
       <h3>{productsData.title}</h3>
-      <p>{quantity}</p>
-      <p>${(quantity * productsData.price).toFixed(2)}</p>
+      <p>{quantity} x &#x20B9;{productsData.price}</p>
+      <p>&#x20B9;{(quantity * productsData.price).toFixed(2)}</p>
       <Button size="sm" onClick={() => cart.deleteFromCart(id)}>
         Remove
       </Button>

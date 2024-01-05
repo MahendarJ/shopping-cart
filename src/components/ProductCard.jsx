@@ -1,12 +1,11 @@
 import React, { useContext } from "react";
 import { Card, Button, Form, Row, Col } from "react-bootstrap";
 import { CartContext } from "../CartContext";
+import { ToastContainer, toast } from "react-toastify";
 
-const ProductCard = (props) => {
-  const product = props.product;
+const ProductCard = ({ product }) => {
   const cart = useContext(CartContext);
   const productQuantity = cart.getProductQuantity(product.id);
-  console.log(cart.item);
   return (
     <Card>
       <Card.Body>
@@ -44,12 +43,33 @@ const ProductCard = (props) => {
             </Button>
           </>
         ) : (
-          <Button
-            variant="primary"
-            onClick={() => cart.addOneToCart(product.id)}
-          >
-            Add to Cart
-          </Button>
+          <>
+            <Button
+              variant="primary"
+              onClick={() => cart.addOneToCart(product.id)}
+            >
+              Add to Cart
+            </Button>
+            <Button
+              className="mx-2"
+              variant="danger"
+              onClick={() => cart.deleteFromInventory(product.id)}
+            >
+              Delete product
+            </Button>
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="dark"
+            />
+          </>
         )}
       </Card.Body>
     </Card>

@@ -7,6 +7,9 @@ import Store from "./pages/Store";
 import Success from "./pages/Success";
 import Cancel from "./pages/Cancel";
 import CartProvider from "./CartContext";
+import Login from "./auth/Login";
+import AuthProvider from "./auth/AuthProvider";
+import PrivateRoute from "./auth/PrivateRoute";
 
 const App = () => {
   return (
@@ -14,11 +17,16 @@ const App = () => {
       <Container>
         <Nav></Nav>
         <BrowserRouter>
-          <Routes>
-            <Route index element={<Store />} />
-            <Route path="success" element={<Success />} />
-            <Route path="cancel" element={<Cancel />} />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/store" element={<Store />} />
+                <Route path="success" element={<Success />} />
+                <Route path="cancel" element={<Cancel />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </Container>
     </CartProvider>

@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const CartContext = createContext({
   item: [],
@@ -11,7 +13,9 @@ export const CartContext = createContext({
   getTotalCost: () => {},
   getProductData: () => {},
   postToInventory: () => {},
+  deleteFromInventory: () => {},
 });
+const URI = `http://localhost:3000/store`;
 
 export const CartProvider = ({ children }) => {
   const [cartProducts, setCartProducts] = useState([]);
@@ -19,8 +23,10 @@ export const CartProvider = ({ children }) => {
   const [stockAdded, setStockAdded] = useState();
   const postToInventory = async (inventory) => {
     try {
-      const response = await axios.post("http://localhost:3000", inventory);
-      setStockAdded(response.data.message);
+      const response = await axios.post(URI, inventory);
+      console.log(response.data.message);
+      setStockAdded(response.data.count);
+      toast.success(response.data.message);
     } catch (error) {
       console.error(error.message);
     }
@@ -29,7 +35,7 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000");
+        const response = await axios.get(URI);
         setProductsArray(response.data);
       } catch (error) {
         console.error(error.message);
@@ -37,6 +43,15 @@ export const CartProvider = ({ children }) => {
     };
     fetchData();
   }, [stockAdded]);
+  const deleteFromInventory = async (id) => {
+    try {
+      const response = await axios.delete(`${URI}/${id}`);
+      setStockAdded(response.data.count);
+      toast.error(response.data.message);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
 
   const getProductData = (id) => {
     let productData = productsArray.find((product) => product.id === id);
@@ -116,6 +131,7 @@ export const CartProvider = ({ children }) => {
     getTotalCost,
     getProductData,
     postToInventory,
+    deleteFromInventory,
   };
   return (
     <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>

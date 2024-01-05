@@ -35,7 +35,7 @@ const Nav = () => {
   return (
     <>
       <Navbar expand="sm">
-        <Navbar.Brand href="/">Ecommerce store</Navbar.Brand>
+        <Navbar.Brand href="/">Inventory stocks Hot-Beverages</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Button onClick={handleShow}>Cart {productsCount} Items</Button>
@@ -56,7 +56,7 @@ const Nav = () => {
                   quantity={item.quantity}
                 ></CartProduct>
               ))}
-              <h1>Total: {cart.getTotalCost().toFixed(2)}</h1>
+              <h1>Total: &#x20B9;{cart.getTotalCost().toFixed(2)}</h1>
               <Button variant="success" onClick={checkout}>
                 Purchase items!
               </Button>
